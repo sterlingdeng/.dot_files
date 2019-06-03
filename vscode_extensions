@@ -33,3 +33,11 @@ code --install-extension WallabyJs.quokka-vscode
 code --install-extension xabikos.JavaScriptSnippets
 code --install-extension xabikos.ReactSnippets
 code --install-extension zxh404.vscode-proto3
+
+
+"vim.insertModeKeyBindings": [
+     {
+         "before": ["j", "j"],
+         "after": ["<esc>"]
+     }
+]
