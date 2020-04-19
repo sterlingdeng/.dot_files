@@ -2,28 +2,48 @@ set nocompatible
 filetype off
 filetype plugin indent on
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+" Plugins
+call plug#begin('~/.vim/plugged')
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'othree/yajs.vim'
-"Plugin 'leafgarland/typescript-vim'
-Plugin 'pangloss/vim-javascript'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'HerringtonDarkholme/yats.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'vim-airline/vim-airline'
-Plugin 'prettier/vim-prettier'
-Plugin 'peitalin/vim-jsx-typescript'
-Plugin 'fatih/vim-go'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+Plug 'vim-airline/vim-airline'
 
-call vundle#end()            " required
+" theme
+Plug 'morhetz/gruvbox'
 
-let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+" Initialize plugin system
+call plug#end()
+
+set termguicolors
+
+colorscheme gruvbox
+set background=dark
+syntax on
+
+" map ctrl-n to toggle NERDTree
+map <C-n> :NERDTreeToggle<CR>
+
+" set escape key as j-k 
+inoremap jk <esc>
+
+" natural split direction
+set splitbelow
+set splitright
+
+filetype plugin indent on
+set smarttab
+set tabstop=2
+set laststatus=2
+set shiftwidth=2
+set expandtab
+set softtabstop=2
+set cindent
+
 
 :set number relativenumber
 :augroup numbertoggle
@@ -32,46 +52,27 @@ autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.gra
 :  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 :augroup END
 
-set showmatch
-nmap j gj
-nmap k gk
+set clipboard=unnamedplus
 
-" set escape key as j-k 
-inoremap jk <esc>
 
-filetype plugin indent on
-set tabstop=2
-set laststatus=2
-set shiftwidth=2
-set expandtab
-set softtabstop=2
-set autoindent
+" https://www.youtube.com/watch?v=T32yqetyy8s
+" go-vim configs
+let g:go_def_mapping_enabled = 0 "delegate godef to lsp client
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-" map ctrl-n to toggle NERDTree
-map <C-n> :NERDTreeToggle<CR>
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
-set splitbelow
-set splitright
 
-autocmd BufRead,BufNewFile *.ts set syntax=typescript
-autocmd BufEnter,BufRead *.ts set filetype=typescript
-autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
-if has("autocmd") && exists("+omnifunc")
-	autocmd Filetype *
-		    \	if &omnifunc == "" |
-		    \		setlocal omnifunc=syntaxcomplete#Complete |
-		    \	endif
-endif
-
-if !exists("g:ycm_semantic_triggers")
-  let g:ycm_semantic_triggers = {}
-endif
-let g:ycm_semantic_triggers['typescript'] = ['.']
-
-set background=light
-syntax on
+" go-vim syntax highlighting
+let g:go_highlight_extra_types = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_variable_declarations = 1
