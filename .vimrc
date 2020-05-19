@@ -1,6 +1,5 @@
 set nocompatible
-filetype off
-filetype plugin indent on
+filetype plugin on
 
 " Plugins
 call plug#begin('~/.vim/plugged')
@@ -12,6 +11,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'vim-airline/vim-airline'
+Plug 'vimwiki/vimwiki'
 
 " theme
 Plug 'morhetz/gruvbox'
@@ -24,6 +24,8 @@ set termguicolors
 colorscheme gruvbox
 set background=dark
 syntax on
+
+set cursorline 
 
 " map ctrl-n to toggle NERDTree
 map <C-n> :NERDTreeToggle<CR>
@@ -67,7 +69,6 @@ nmap <silent> gr <Plug>(coc-references)
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
-
 " Highlight symbol under cursor on CursorHold
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
@@ -76,3 +77,14 @@ let g:go_highlight_extra_types = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_function_calls = 1
 let g:go_highlight_variable_declarations = 1
+
+" vim wiki
+let g:vimwiki_list = [
+      \ {'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
+"     \ {'path': '~/vimwiki/', 'syntax': 'default', 'ext': '.wiki'}
+"     \ ]
+let g:vimwiki_ext2syntax = {'.md': 'markdown',
+                            \ '.wiki': 'media'}
+let g:vimwiki_use_mouse = 1
+
+nmap <C-P> :Files<Enter>
